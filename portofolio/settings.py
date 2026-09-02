@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-7!!lrk2*42b104fb0su&ju27vp77-jr@+tt=_6)#ysn&8_e!e+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1","nurul-zakyah-myportofolio.pws.cs.ui.ac.id."]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1","nurul-zakyah-myportofolio.pws.cs.ui.ac.id"]
 
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 
