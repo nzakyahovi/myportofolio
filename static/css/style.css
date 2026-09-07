@@ -7,16 +7,16 @@
 :root {
     --paper: #2b1e2a;        /* Warm dark twilight */
     --ink: #f7ede2;          /* Vintage warm cream */
-    --accent: #e76f51;       /* Warm terracotta / coral */
-    --accent-dark: #b8543d;  /* Terracotta shade (hover state) */
+    --accent: #e76f51c7;       /* Warm terracotta / coral */
+    --accent-dark: #ab5845d8;  /* Terracotta shade (hover state) */
     --line: #453344;         /* Muted border */
     --text-muted: #a3919f;    /* Warm muted text */
     --radius: 8px;
 
     /* Variabel Shadow Tambahan */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
-    --glow-accent: 0 0 15px rgba(214, 34, 70, 0.4); /* Efek berpendar warna accent */
+    --shadow-sm: 0 2px 8px rgba(164, 30, 131, 0.2);
+    --shadow-lg: 0 10px 25px rgba(134, 47, 155, 0.4);
+    --glow-accent: 0 0 15px rgba(124, 79, 219, 0.751); /* Efek berpendar warna accent */
 }
 
 body {
@@ -24,34 +24,55 @@ body {
     color: var(--ink);
     background-color: var(--paper);
     line-height: 2.0;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
 
-     /* Variabel bintang Tambahan */
-     background-color: var(--paper);
-        color: var(--ink);
-        position: relative;
-        overflow-x: hidden;
-    }
-    
-    body::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background-image: 
-            radial-gradient(1px 1px at 25px 35px, #ffffff, transparent),
-            radial-gradient(1.5px 1.5px at 85px 150px, #ffffff, transparent),
-            radial-gradient(1px 1px at 180px 90px, rgba(255,255,255,0.8), transparent),
-            radial-gradient(2px 2px at 240px 220px, rgba(255,255,255,0.6), transparent);
-        background-size: 250px 250px;
-        animation: twinkle 4s infinite alternate ease-in-out;
-    }
-    
-    @keyframes twinkle {
-        0% { opacity: 0.5; }
-        100% { opacity: 0.8; }
-    }
-     /* batas */
+/* Pengaturan umum untuk kedua layer bintang */
+body::before,
+body::after {
+    content: "";
+    position: fixed; /* Fixed agar bintang tidak bergeser aneh saat scroll */
+    inset: 0;
+    pointer-events: none;
+    z-index: -1; /* Berada paling belakang */
+}
 
+/* LAYER 1: Bintang-bintang Kecil */
+body::before {
+    background-image: 
+        radial-gradient(1px 1px at 25px 35px, #ffffff, transparent),
+        radial-gradient(1.5px 1.5px at 85px 150px, #ffffff, transparent),
+        radial-gradient(1px 1px at 180px 90px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 240px 220px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1.5px 1.5px at 320px 110px, rgba(255,255,255,0.9), transparent);
+    background-size: 350px 350px;
+    animation: twinkle 4s infinite alternate ease-in-out;
+}
+
+/* LAYER 2: Bintang Lebih Besar & Berpendar (Glow Effect) */
+body::after {
+    background-image: 
+        radial-gradient(3px 3px at 60px 120px, #ffffff 30%, rgba(255, 255, 255, 0.3) 70%, transparent),
+        radial-gradient(3.5px 3.5px at 210px 40px, #ffffff 30%, rgba(231, 111, 81, 0.5) 70%, transparent),
+        radial-gradient(4px 4px at 150px 220px, #ffffff 20%, rgba(255, 255, 255, 0.2) 80%, transparent),
+        radial-gradient(3px 3px at 300px 180px, #ffffff 30%, rgba(255, 255, 255, 0.4) 70%, transparent);
+    background-size: 420px 420px;
+    animation: twinkle 6s infinite alternate ease-in-out 1.5s;
+}
+
+/* Animasi Kelap-kelip */
+@keyframes twinkle {
+    0% { 
+        opacity: 0.2;
+    }
+    100% { 
+        opacity: 0.95;
+    }
+}
+
+/* batas*/
 
 h1, .brand {
     font-family: "Space Grotesk", -apple-system, sans-serif;
@@ -89,6 +110,10 @@ h1, .brand {
     color: var(--ink);
     text-decoration: none;
     font-size: 0.95rem;
+}
+
+.site-header nav a:hover {
+    color: var(--accent);
 }
 
 .hero {
@@ -171,6 +196,8 @@ h1, .brand {
 
 .social-link:hover {
     background-color: var(--accent);
+    color: var(--paper);                /*tambahan*/
+    box-shadow: var(--glow-accent); /*tambahan*/
 }
 
 .hero-photo {
@@ -223,5 +250,99 @@ h1, .brand {
 
     .social-links {
         justify-content: flex-start;
+    }
+}
+
+/*
+   TAMBAHAN UNTUK SECTION BARU */
+
+/* Jarak untuk setiap section baru */
+.page-section {
+    padding: 4rem 0;
+    border-top: 1px solid var(--line); /* Garis pembatas halus apersection */
+}
+
+.section-title {
+    font-family: "Space Grotesk", -apple-system, sans-serif;
+    font-size: 2rem;
+    color: var(--accent); 
+    margin-bottom: 2rem;
+}
+
+.skill-tag {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    background-color: transparent;
+    border: 1px solid var(--line);
+    padding: 0.5rem 1rem;
+    border-radius: 20px; /* Bentuk pill/kapsul */
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.skill-tag:hover {
+    background-color: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+    box-shadow: var(--glow-accent);
+    transform: translateY(-2px);
+}
+
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border-left: 2px solid var(--line);
+    padding-left: 1.5rem;
+    margin-left: 0.5rem;
+}
+
+.timeline-item {
+    position: relative;
+}
+
+/* Titik/Bulatan pada timeline */
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -1.9rem; /* Menyesuaikan posisi titik agar pas di garis */
+    top: 0.3rem;
+    width: 12px;
+    height: 12px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    box-shadow: var(--glow-accent); /*  efek glowing dititik */
+}
+
+.timeline-title {
+    font-size: 1.2rem;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+}
+
+.timeline-meta {
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.timeline-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 600px;
+    line-height: 1.8;
+}
+
+/* Penyesuaian untuk layar HP */
+@media (max-width: 600px) {
+    .page-section {
+        padding: 3rem 0;
+    }
+    .section-title {
+        font-size: 1.75rem;
     }
 }
