@@ -13,9 +13,43 @@ Kelas : PBP C
 
 Dalam pengerjaan tugas ini, saya menggunakan bantuan alat AI (ChatGPT & Gemini) untuk membantu proses eksplorasi kodingan.
 
-1.AI membantu saya dalam memberikan variasi background bintang berkelip.
+    1. AI membantu saya dalam memberikan variasi background bintang berkelip.
 
-2. membantu menemukan bug pada </nav> yang terpasang lebih awal dibagian porofil sehingga memberikan warna yang tidak sesuai(seperti tautan) ketika dilihat pada localhost
+    2. membantu menemukan bug pada </nav> yang terpasang lebih awal dibagian porofil sehingga memberikan warna yang tidak sesuai(seperti tautan) ketika dilihat pada localhost
 
-3.membantu menemukan kodingan redundan dan mengoptimalkannya
+    3. membantu menemukan kodingan redundan dan mengoptimalkannya
 
+
+### Tugas 2
+
+1. alur pemrosesan halaman portofolio baru
+    a. pengguna mengetik atau membuka link URL di browser
+    b. urls.py (Proyek): Menjadi pintu masuk utama. Berkas ini membaca rute URL dan  meneruskannya ke berkas urls.py milik aplikasi menggunakan include()
+    c.urls.py (Aplikasi): Mencocokkan rute spesifik yang diminta dengan fungsi view yang bertanggung jawab (misalnya views.show_education).
+    d.View (views.py): Berperan sebagai pengatur logika (controller). View memanggil Model untuk meminta data yang dibutuhkan.
+    e.Model (models.py): Berkomunikasi dengan database menggunakan Django ORM untuk mengambil data portofolio, lalu mengembalikannya ke View dalam bentuk QuerySet.
+    f.Template (.html): View menyuntikkan data tersebut ke dalam dictionary context dan merender file template HTML. Sintaks Django (seperti {% for %}) memproses data dinamis menjadi elemen HTML utuh.
+    g.Browser Response: Django mengembalikan hasil render tersebut sebagai HttpResponse ke browser untuk ditampilkan kepada pengguna.
+
+2. . Mengapa Data Wajib Disimpan di Model (Bukan Hardcode di Template)
+
+    a.Pemisahan Tanggung Jawab (Separation of Concerns): Template berfokus pada struktur tampilan (UI/UX), sedangkan Model berfokus pada penyimpanan dan struktur data. Campur aduk keduanya membuat kode berantakan.
+    b. Kemudahan Pemeliharaan (Maintainability): Jika data di-hardcode di template, setiap ada penambahan atau perubahan karya, kamu harus membuka dan mengubah file HTML secara manual. Menggunakan Model memungkinkan pengubahan data dengan mudah via Django Admin atau Shell tanpa menyentuh kode aplikasi.
+    c. Skalabilitas & Efisiensi Kode: Model memungkinkan pemrosesan data seperti pencarian, filter, dan pengurutan (sorting). Di sisi template, kamu cukup menulis satu struktur looping ({% for item in list %}), dan tampilannya akan otomatis menyesuaikan sebanyak apa pun data di database.
+
+3.  Perbedaan makemigrations vs migrate & Contoh Kasus
+    makemigrations: Memindai perubahan pada file models.py dan membuat berkas migrasi baru (berupa blueprint / instruksi perubahan) di dalam folder migrations/. Perintah ini belum mengubah struktur database.
+
+    migrate: Mengeksekusi berkas migrasi yang sudah dibuat untuk benar-benar memperbarui struktur tabel pada database sungguhan.
+    # main/models.py
+    class Education(models.Model):
+    institution = models.CharField(max_length=255)
+    degree = models.CharField(max_length=50)
+    # Menambahkan field baru:
+    gpa = models.FloatField(null=True, blank=True) 
+    Langkah yang harus dilakukan:
+
+    Jalankan python manage.py makemigrations  untuk Django mendeteksi penambahan gpa dan membuat file instruksi (misal: 0002_education_gpa.py).
+    Jalankan python manage.py migrate  untuk Django mengeksekusi file 0002 tersebut sehingga kolom gpa benar-benar dibuat di dalam tabel database.
+
+    dalam penyelesaian tugas ini saya menggunakan gemini untuk eksplorasi dan membahas lebih dalam memahami lebih lanjut tentang pertanyaan tugas 2.

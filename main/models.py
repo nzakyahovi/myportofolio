@@ -27,3 +27,25 @@ class Experience(models.Model):
     @property
     def is_ongoing(self):
         return self.ended_at is None
+
+class Education(models.Model):
+    DEGREE_CHOICES = [
+        ('high_school', 'High School'),
+        ('bachelor', 'Bachelor'),
+        ('master', 'Master'),
+        ('doctoral', 'Doctoral'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    institution = models.CharField(max_length=255)
+    degree = models.CharField(max_length=20, choices=DEGREE_CHOICES, default='bachelor')
+    field_of_study = models.CharField(max_length=255)
+    started_at = models.DateTimeField(auto_now_add=True)
+    ended_at = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.institution} - {self.field_of_study}"
+
+    @property
+    def is_ongoing(self):
+        return self.ended_at is None

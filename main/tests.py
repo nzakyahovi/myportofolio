@@ -59,3 +59,30 @@ class MainTest(TestCase):
         self.assertFalse(self.experience.is_ongoing)
         self.assertContains(response, "Selesai")
         self.assertNotContains(response, "Sedang berlangsung")
+
+class EducationViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    # 1. URL dapat diakses dan menggunakan template yang tepat
+    def test_show_education_url_and_template(self):
+        response = self.client.get(reverse('main:show_education'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'education.html')
+
+    # 2. Halaman menampilkan pesan kondisi kosong ketika belum ada data
+    def test_show_education_empty_condition(self):
+        response = self.client.get(reverse('main:show_education'))
+        self.assertContains(response, 'Belum ada riwayat pendidikan yang ditampilkan.')
+
+    # 3. Data model muncul di halaman HTML ketika ada data
+    def test_show_education_with_data(self):
+        Education.objects.create(
+            institution="Universitas Indonesia",
+            degree="bachelor",
+            field_of_study="Sistem Informasi"
+        )
+        response = self.client.get(reverse('main:show_education'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Universitas Indonesia")
+        self.assertContains(response, "Sistem Informasi")
