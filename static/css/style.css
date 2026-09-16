@@ -500,3 +500,372 @@ h1, .brand {
     font-size: 0.95rem;
     margin: 0;
 }
+
+.project-form {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    font: inherit;
+    transition:
+        border-color 0.2s ease,
+        outline-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: 2px solid var(--accent);
+    border-color: var(--accent);
+}
+
+.form-error {
+    color: #b42318;
+    font-size: 0.85rem;
+    margin-top: 0.35rem;
+}
+
+.button {
+    display: inline-block;
+    height: fit-content;
+    border: 0;
+    border-radius: var(--radius);
+    padding: 0.65rem 1rem;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.button-secondary {
+    background: var(--ink);
+}
+/* ==========================================
+   PERBAIKAN KHUSUS HALAMAN PROJECT
+   ========================================== */
+
+/* Grid: Gunakan auto-fill agar 1 kartu tidak melebar memenuhi layar */
+.experience-grid,
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Kartu Proyek: Background gelap transparan yang cocok dengan tema */
+.experience-card {
+    padding: 1.25rem;
+    background-color: rgba(255, 255, 255, 0.05); /* Mengganti warna ungu #a871b9c3 */
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.experience-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+}
+
+/* Gambar Proyek: Membatasi tinggi agar tidak melar */
+.project-image {
+    display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    border: 1px solid var(--line);
+}
+
+/* Tech Stack (Kategori): Warna coral/terracotta terang */
+.experience-category {
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Judul & Deskripsi Proyek */
+.experience-card h2 {
+    color: var(--ink);
+    font-size: 1.25rem;
+    margin: 0.3rem 0 0.5rem 0;
+    font-weight: 700;
+}
+
+.experience-description {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* Tombol Link Proyek: Menghilangkan warna biru default */
+.experience-status {
+    margin-top: auto;
+}
+
+.experience-status a {
+    display: inline-block;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+}
+
+.experience-status a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+}
+
+
+.project-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.project-grid .experience-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.project-image {
+    display: block;
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 0.9rem;
+}
+
+.project-grid .experience-card h2 {
+    font-size: 1.1rem;
+    margin: 0.15rem 0 0.4rem;
+}
+
+.project-grid .experience-category {
+    font-size: 0.7rem;
+}
+
+.project-grid .experience-description {
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.project-header h1 {
+    margin-bottom: 0;
+    font-size: 1.75rem;
+}
+
+.project-add-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.project-add-button span {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.project-search {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+}
+
+.project-search__input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+}
+
+.project-search__input:focus {
+    outline: 2px solid var(--accent);
+    border-color: var(--accent);
+}
+
+.project-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 0.75rem;
+}
+
+.project-actions .button {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.project-card-actions {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+}
+
+.hide {
+    display: none !important;
+}
+
+.project-actions .experience-status {
+    margin-top: 0;
+}
+
+.project-delete-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 1rem;
+    border: 0;
+    background: transparent;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-delete-modal:popover-open {
+    display: flex;
+}
+
+.project-delete-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    background: rgba(28, 25, 23, 0.58);
+    cursor: default;
+}
+
+.project-delete-modal__content {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 480px);
+    padding: 1.5rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 1rem 3rem rgba(28, 25, 23, 0.22);
+}
+
+.project-delete-modal__content h2 {
+    margin: 0 0 0.75rem;
+    font-family:
+        "Space Grotesk",
+        -apple-system,
+        sans-serif;
+    font-size: 1.5rem;
+}
+
+.project-delete-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.project-delete-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.button-danger {
+    background: #b42318;
+}
+
+@media (max-width: 600px) {
+    .project-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .project-add-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .project-search {
+        flex-direction: column;
+    }
+
+    .project-search .button {
+        width: 100%;
+    }
+
+    .project-delete-modal {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .project-delete-modal__content {
+        width: 100%;
+        padding: 1.25rem;
+        border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .project-delete-modal__actions {
+        flex-direction: column-reverse;
+    }
+
+    .project-delete-modal__actions .button {
+        width: 100%;
+        text-align: center;
+    }
+}
