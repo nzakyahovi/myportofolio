@@ -27,26 +27,26 @@ class Experience(models.Model):
         return self.ended_at is None
 
 class Education(models.Model):
+
     DEGREE_CHOICES = [
-        ('high_school', 'High School'),
-        ('bachelor', 'Bachelor'),
-        ('master', 'Master'),
-        ('doctoral', 'Doctoral'),
+        ('SMA/SMK', 'SMA/SMK'),
+        ('D3', 'Diploma (D3)'),
+        ('S1', 'Sarjana (S1)'),
+        ('S2', 'Magister (S2)'),
+        ('S3', 'Doktor (S3)'),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    degree = models.CharField(max_length=50, choices=DEGREE_CHOICES, default='S1')
     institution = models.CharField(max_length=255)
-    degree = models.CharField(max_length=20, choices=DEGREE_CHOICES, default='bachelor')
     field_of_study = models.CharField(max_length=255)
-    started_at = models.DateTimeField(auto_now_add=True)
-    ended_at = models.DateTimeField(blank=True, null=True)
+    start_year = models.DateTimeField(blank=True, null=True)
+    end_year = models.DateTimeField(blank=True, null=True)
+    education_image_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.institution} - {self.field_of_study}"
+            return f"{self.institution} - {self.degree}"
 
-    @property
-    def is_ongoing(self):
-        return self.ended_at is None
 
 class Project(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

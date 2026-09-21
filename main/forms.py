@@ -1,18 +1,11 @@
-from django.forms import ModelForm, TextInput, Textarea, URLInput
-
-from main.models import Project
+from django.forms import ModelForm, TextInput, Textarea, URLInput, Select, DateTimeInput
+from main.models import Project, Education
 
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = [
-            "title",
-            "description",
-            "tech_stack",
-            "project_url",
-            "project_image_url",
-        ]
-
+        fields = ["title", "description", "tech_stack", "project_url", "project_image_url"]
+        
         labels = {
             "title": "Nama Proyek",
             "description": "Deskripsi Proyek",
@@ -41,12 +34,62 @@ class ProjectForm(ModelForm):
             ),
             "project_url": URLInput(
                 attrs={
-                    "placeholder": "https://github.com/kakBurhan/burhanquestv4",
+                    "placeholder": "https://github.com/...",
                 }
             ),
             "project_image_url": URLInput(
                 attrs={
-                    "placeholder": "https://drive.google.com/thumbnail?id=...&sz=w1000",
+                    "placeholder": "https://drive.google.com/...",
+                }
+            ),
+        }
+
+
+class EducationForm(ModelForm):
+    class Meta:
+        model = Education
+        fields = ['institution', 'degree', 'field_of_study', 'start_year', 'end_year', 'education_image_url']
+
+        labels = {
+            'institution': 'Nama Institusi',
+            'degree': 'Jenjang Pendidikan',
+            'field_of_study': 'Jurusan / Bidang Studi',
+            'start_year': 'Waktu Mulai',
+            'end_year': 'Waktu Selesai',
+            'education_image_url': 'URL Logo/Gambar Institusi',
+        }
+
+        widgets = {
+            "institution": TextInput(
+                attrs={
+                    "placeholder": "Contoh: Universitas Indonesia",
+                    "maxlength": 255,
+                }
+            ),
+            "degree": Select(
+                attrs={
+                    "class": "form-control",
+                }
+            ),
+            "field_of_study": TextInput(
+                attrs={
+                    "placeholder": "Contoh: Sistem Informasi",
+                    "maxlength": 255,
+                }
+            ),
+            "start_year": DateTimeInput(
+                attrs={
+                    "type": "datetime-local",
+                }
+            ),
+            "end_year": DateTimeInput(
+                attrs={
+                    "type": "datetime-local",
+                }
+            ),
+            "education_image_url": URLInput(
+                attrs={
+                    "placeholder": "https://drive.google.com/...",
                 }
             ),
         }

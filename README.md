@@ -53,3 +53,51 @@ Dalam pengerjaan tugas ini, saya menggunakan bantuan alat AI (ChatGPT & Gemini) 
     Jalankan python manage.py migrate  untuk Django mengeksekusi file 0002 tersebut sehingga kolom gpa benar-benar dibuat di dalam tabel database.
 
     dalam penyelesaian tugas ini saya menggunakan gemini untuk eksplorasi dan membahas lebih dalam memahami lebih lanjut tentang pertanyaan tugas 2.
+
+### Tugas 3
+
+1. Mengapa Menggunakan ModelForm dan Alasan Penggunaan csrf_token
+
+    Alasan Menggunakan ModelForm:
+    - Hemat Waktu dan Ringkas (Prinsip DRY):
+    Kita tidak perlu menulis tag <input> secara manual satu per satu di HTML. Django secara otomatis membuatkan elemen form berdasarkan struktur field yang sudah kita definisikan di models.py.
+    - Validasi Otomatis:
+    ModelForm langsung mengambil aturan validasi dari model (misalnya max_length atau field yang wajib diisi). Jadi kalau ada input yang tidak sesuai, pesan error langsung ditangani oleh Django tanpa kita harus membuat logika validasi manual dari awal.
+    - Proses Simpan ke Database Lebih Praktis:
+    Untuk menyimpan data ke database, kita cukup memanggil form.save(). Beda kalau menggunakan form manual, kita harus mengambil nilainya satu per satu memakai request.POST.get('nama_field') lalu dimasukkan ke instance model secara manual.
+
+    Alasan Wajib Menambahkan {% csrf_token %}:
+    - Tag {% csrf_token %} wajib ada pada form bertipe POST, PUT, atau DELETE untuk mengamankan aplikasi dari serangan CSRF (Cross-Site Request Forgery).
+    - Cara kerjanya, Django akan menyisipkan token terenkripsi yang unik ke dalam form sebagai hidden input. Saat form dikirimkan, Django bakal mencocokkan token di form dengan token yang ada pada sesi pengguna. Jika token cocok, Django memastikan bahwa request tersebut memang dikirim oleh pengguna dari web kita, bukan dari situs lain yang mencoba memalsukan tindakan atas nama pengguna.
+
+
+2. Keunggulan JSON Dibandingkan XML dalam Pengembangan Web Modern
+
+    JSON lebih banyak digunakan dibanding XML dalam pengembangan web modern karena beberapa alasan:
+
+    - Ukuran Data Lebih Ringan:
+    JSON memakai struktur key-value ringkas seperti {"nama": "Ovi"}, beda dengan XML yang harus memakai tag pembuka dan penutup seperti <nama>Ovi</nama>. Hal ini membuat ukuran file JSON jauh lebih kecil dan hemat bandwidth saat dikirim lewat jaringan.
+    - Dukungan Bawaan di JavaScript:
+    Karena JSON merupakan bagian dari sintaksis JavaScript, browser bisa langsung memproses datanya menggunakan fungsi bawaan JSON.parse(). Sementara untuk XML, browser harus memakai XML DOM Parser yang prosesnya lebih rumit.
+    - Struktur Data Sederhana:
+    Bentuk JSON secara alami cocok dengan struktur data umum di berbagai bahasa pemrograman, seperti object (dictionary) dan array (list), sehingga jauh lebih gampang dibaca dan diolah.
+    - Pemrosesan (Parsing) Lebih Cepat:
+    Karena format teksnya sederhana dan tidak berbelit-belit, proses pembacaan data JSON baik di sisi server maupun browser bisa berjalan lebih cepat.
+
+
+3. Alur View JSON dan Alasan Perlunya Serialization
+
+    Alur Pengembalian Data Portofolio dalam Bentuk JSON:
+    1. HTTP Request: Client (browser atau fungsi Fetch/AJAX) mengirim request GET ke URL endpoint JSON (misalnya /json/).
+    2. URL Routing: Django mencocokkan path di urls.py lalu meneruskan request ke fungsi view yang sesuai.
+    3. Query Database: Di fungsi view, Django ORM mengambil data dari database (seperti Education.objects.all()), yang menghasilkan data berupa QuerySet.
+    4. Proses Serialization: Data QuerySet tersebut diubah formatnya dari objek Django/Python menjadi string berformat JSON menggunakan serializers.serialize('json', data) atau JsonResponse.
+    5. HTTP Response: Fungsi view mengembalikan objek HttpResponse / JsonResponse berisi data JSON tersebut beserta header Content-Type: application/json ke client.
+    6. Rendering di Client: Client menerima data JSON tersebut lalu memakai JavaScript untuk menampilkan datanya di halaman web secara dinamis.
+
+    Mengapa Perlu Melakukan Serialization?
+    - Data yang ditarik lewat ORM Django bentuknya adalah objek Python (QuerySet atau instance dari model) yang tersimpan di memori server. Objek ini tidak bisa langsung dikirim melalui protokol HTTP, karena HTTP hanya bisa mentransfer data berbentuk teks/string.
+    - Lewat proses serialization, objek kompleks Python tersebut dikonversi dulu menjadi format teks terstruktur (JSON). Selain itu, karena JSON bersifat universal (language-agnostic), data dari backend Django bisa dengan mudah dibaca dan dipakai oleh teknologi apa saja di sisi frontend (JavaScript murni, React, Vue, hingga aplikasi mobile).
+
+
+    dalam penyelesaian tugas ini saya menggunakan  gen Ai untuk eksplorasi dan membantu dalam mengimplementasi bagian form tanggl dan laiinya yang berbeda pada tutorial 3, serta gen ai juga membantu saya memahami lanjut apa yang baru saya pelajari di json.
