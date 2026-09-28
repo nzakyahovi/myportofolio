@@ -11,12 +11,26 @@
                 <p class="section-kicker">Latar Belakang Akademis</p>
                 <div class="education-header">
                     <h1>Education</h1>
+                    {% if user.is_superuser %}
                     <a href="{% url 'main:create_education' %}"
                        class="button education-add-button">
                         <span aria-hidden="true">+</span>
                         Tambah Pendidikan
                     </a>
+                    {% endif %}    
                 </div>
+
+                <form method="get"
+                      action="{% url 'main:show_education' %}"
+                      class="education-search">
+                    <input type="search"
+                           name="query"
+                           value="{{ query }}"
+                           placeholder="Cari berdasarkan nama institusi atau bidang studi"
+                           class="education-search__input"
+                           aria-label="Cari berdasarkan nama institusi atau bidang studi">
+                    <button type="submit" class="button">Cari</button>
+                </form>
 
                 <div class="experience-grid education-grid">
                     {% for education in education_list %}
@@ -43,13 +57,21 @@
 
                             <div class="education-card-actions">
                                 <div class="education-actions">
-                                    <a href="{% url 'main:edit_education' education.id %}" class="button">Edit</a>
-                                    {% include "components/education_delete_modal.html" with education=education %}
+                                    {% include "components/education_star.html" with education=education %}
+                                    
+                                    {% if user.is_superuser %}
+                                        <a href="{% url 'main:edit_education' education.id %}" class="button">Edit</a>
+                                        {% include "components/education_delete_modal.html" with education=education %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </article>
                     {% empty %}
-                        <p class="empty-state">Belum ada riwayat pendidikan yang ditambahkan.</p>
+                        {% if query %}
+                            <p class="empty-state">Tidak ada riwayat pendidikan yang sesuai dengan pencarian.</p>
+                        {% else %}
+                            <p class="empty-state">Belum ada riwayat pendidikan yang ditambahkan.</p>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
