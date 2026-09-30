@@ -1,5 +1,7 @@
 from django.forms import ModelForm, TextInput, Textarea, URLInput, Select, DateTimeInput
 from main.models import Project, Education, Experience
+from django.core.exceptions import ValidationError
+from django.utils.html import strip_tags
 
 class ProjectForm(ModelForm):
     class Meta:
@@ -13,6 +15,7 @@ class ProjectForm(ModelForm):
             "project_url": "URL Proyek",
             "project_image_url": "URL Gambar Proyek",
         }
+    
 
         widgets = {
             "title": TextInput(
@@ -43,6 +46,18 @@ class ProjectForm(ModelForm):
                 }
             ),
         }
+
+    def clean_title(self):
+        title = strip_tags(self.cleaned_data["title"]).strip()
+        if not title:
+            raise ValidationError("Nama proyek tidak boleh hanya berisi tag HTML.")
+        return title
+
+    def clean_tech_stack(self):
+        return strip_tags(self.cleaned_data["tech_stack"]).strip()
+
+    def clean_description(self):
+        return strip_tags(self.cleaned_data["description"]).strip()
 
 
 class EducationForm(ModelForm):
@@ -93,6 +108,20 @@ class EducationForm(ModelForm):
                 }
             ),
         }
+    def clean_institution(self):
+        institution = strip_tags(self.cleaned_data["institution"]).strip()
+        if not institution:
+            raise ValidationError("Nama institusi tidak boleh hanya berisi tag HTML.")
+        return institution
+
+    def clean_degree(self):
+        degree = strip_tags(self.cleaned_data["degree"]).strip()
+        if not degree:
+            raise ValidationError("Gelar tidak boleh hanya berisi tag HTML.")
+        return degree
+
+    def clean_field_of_study(self):
+        return strip_tags(self.cleaned_data["field_of_study"]).strip()
 
 class ExperienceForm(ModelForm):
     class Meta:
@@ -143,5 +172,19 @@ class ExperienceForm(ModelForm):
                 }
             ),
         }
+    def clean_title(self):
+        title = strip_tags(self.cleaned_data["title"]).strip()
+        if not title:
+            raise ValidationError("Judul posisi tidak boleh hanya berisi tag HTML.")
+        return title
+
+    def clean_company(self):
+        company = strip_tags(self.cleaned_data["company"]).strip()
+        if not company:
+            raise ValidationError("Nama perusahaan tidak boleh hanya berisi tag HTML.")
+        return company
+
+    def clean_description(self):
+        return strip_tags(self.cleaned_data["description"]).strip()
         
        
