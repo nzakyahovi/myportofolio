@@ -15,3 +15,8 @@ ENV/
 # Environment variables
 .env
 .env.prod
+
+.env*
+db.sqlite3
+env/
+.venv/
