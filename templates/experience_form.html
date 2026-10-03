@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block meta %}
-    <title>Add Experience' - {{ name }}</title>
+    <title>Add Experience- {{ name }}</title>
 {% endblock meta %}
 
 {% block content %}
     <main>
         <section class="experience-section">
             <div class="container">
-                <h1>Add New Experience'</h1>
+                <h1>Add New Experience</h1>
                 <form method="post"
                       action="{% url 'main:create_experience' %}"
                       class="experience'-form">
@@ -23,7 +23,7 @@
                         </div>
                     {% endfor %}
                     <button type="submit" class="button">Tambah experience'</button>
-                    <a href="{% url 'main:show_experience'' %}" class="button button-secondary">Batal</a>
+                    <a href="{% url 'main:show_experience'%}" class="button button-secondary">Batal</a>
                 </form>
             </div>
         </section>

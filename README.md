@@ -101,3 +101,41 @@ Dalam pengerjaan tugas ini, saya menggunakan bantuan alat AI (ChatGPT & Gemini) 
 
 
     dalam penyelesaian tugas ini saya menggunakan  gen Ai untuk eksplorasi dan membantu dalam mengimplementasi bagian form tanggl dan laiinya yang berbeda pada tutorial 3, serta gen ai juga membantu saya memahami lanjut apa yang baru saya pelajari di json.
+
+
+    
+### Tugas 5
+
+1. Debouncing pada Fitur Pencarian AJAX
+
+    Pengertian: Debouncing adalah teknik untuk menunda eksekusi suatu fungsi hingga durasi waktu tertentu berlalu sejak event/input terakhir dipicu. Jika ada input baru sebelum jeda waktu selesai, timer akan di-reset kembali dari awal.
+
+    Mengapa Penting pada Pencarian AJAX:
+
+        a. Menghemat Request HTTP: Mencegah browser mengirim permintaan ke server untuk setiap karakter yang diketik (contoh: mengetik kata "Django" tanpa debouncing akan memicu 6 request sekaligus).
+
+        b. Mengurangi Beban Server: Browser hanya mengirim permintaan AJAX saat pengguna sudah berhenti mengetik selama sejenak (misalnya dengan jeda 300 ms).
+
+        c. Mencegah Race Condition: Menghindari potensi bentrokan data di mana hasil pencarian lama menimpa hasil pencarian yang terbaru di antarmuka pengguna (UI).
+
+2. Fungsi await pada fetch()
+
+    Fungsi await: Digunakan di dalam async function untuk menghentikan sementara eksekusi kode berikutnya sampai Promise dari fetch() selesai diproses dan mengembalikan data respons.
+
+    Jika Tidak Menggunakan await:
+
+        a. fetch() akan mengembalikan objek Promise <pending>, bukan nilai data respons secara langsung.
+
+        b. JavaScript akan langsung menjalankan baris kode berikutnya tanpa menunggu data selesai diunduh dari jaringan.
+
+        c. Variabel penampung akan berisi Promise alih-alih nilai data sebenarnya, sehingga pemanggilan fungsi lanjutan seperti .json() akan menyebabkan error atau bernilai undefined.
+
+3. Serangan XSS (Cross-Site Scripting) & Kerentanan AJAX vs Template Django
+
+    Pengertian XSS: Cross-Site Scripting (XSS) adalah serangan keamanan di mana penyerang menyisipkan skrip JavaScript berbahaya ke dalam aplikasi web agar dieksekusi oleh browser pengguna lain.
+
+        Alasan Data AJAX/JavaScript Lebih Rentan daripada Template Django:
+
+        a. Auto-Escaping Otomatis pada Django: Secara bawaan, template engine Django selalu melakukan escaping pada karakter khusus HTML (<, >, &, ", ') menjadi HTML entity. Hal ini membuat skrip yang dimasukkan hanya akan dirender sebagai teks biasa di browser.
+
+        b. Manipulasi DOM Manual di JavaScript: Saat menyajikan data hasil AJAX menggunakan properti seperti innerHTML, JavaScript tidak melakukan sanitasi otomatis. Jika data JSON mengandung skrip berbahaya (seperti <img src="x" onerror="alert('XSS')">), browser akan langsung mengeksekusinya. Maka dari itu, pengembang wajib menerapkan fungsi escaping manual atau menggunakan textContent saat mengolah data AJAX.

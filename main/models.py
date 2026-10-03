@@ -27,7 +27,7 @@ class Education(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     degree = models.CharField(max_length=50)
-    institution = models.CharField(max_length=255)
+    institution = models.CharField(max_length=255, null=True)
     field_of_study = models.CharField(max_length=255)
     start_year = models.DateTimeField(blank=True, null=True)
     end_year = models.DateTimeField(blank=True, null=True)

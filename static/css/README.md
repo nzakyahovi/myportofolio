@@ -1268,3 +1268,23 @@ h1, .brand {
     background: rgba(255, 255, 255, 0.25);
     font-size: 0.8rem;
 }
+
+ pr
+ 1. setelah ditambahkan proyek maupun yang lain itu tidak menambahkan apapun ke bagian section di web nya
+ 2.  fitur pada penambahan section pas kan lagi(gak harus ada web pada experience"boleh sihh tapi pengisisannya gak wajib "), gak perlu section yang pakai tanggal  memberikan info secara detail, kayak tanggal dan jamm,,
+ 3. tombol yang ada di web search itu asimetris dan kurang presisi, 
+ 4. penggunaan warnanya juga  kurang pas: -bagaian kolom pengisian ada yang gelap ada yang putih
+                                        - bagian pertanyaan form teks nya warna item jadi kurang keliatan
+                                        - button toast nya terlaliu gede dan bikin sempit(terlalu mepet)
+
+.form-group input,
+.form-group textarea 
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--ink);
+    font: inherit;
+    transition: border-color 0.2s ease, outline-color 0.2s ease;
