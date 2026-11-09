@@ -1,11 +1,10 @@
 from django.test import TestCase
 
-# Create your tests here.
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
 
-from main.models import Experience
+from main.models import Experience, Education
 
 
 class MainTest(TestCase):
@@ -13,7 +12,6 @@ class MainTest(TestCase):
         self.experience = Experience.objects.create(
             title="Asisten Dosen PBP",
             description="Membantu mahasiswa memahami pengembangan web.",
-            category="part-time",
         )
 
     def test_main_url_is_accessible(self):
@@ -31,7 +29,6 @@ class MainTest(TestCase):
 
     def test_experience_model(self):
         self.assertEqual(str(self.experience), "Asisten Dosen PBP")
-        self.assertEqual(self.experience.category, "part-time")
         self.assertTrue(self.experience.is_ongoing)
 
     def test_experience_page(self):
@@ -39,17 +36,19 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "experience.html")
-        self.assertContains(response, self.experience.title)
-        self.assertContains(response, self.experience.description)
-        self.assertContains(response, "Part-Time")
-        self.assertContains(response, "Sedang berlangsung")
         self.assertContains(response, f'href="{reverse("main:show_main")}"')
+
+        data = self.client.get(reverse("main:get_experience_json")).json()
+        self.assertEqual(data[0]["fields"]["title"], self.experience.title)
+        self.assertEqual(data[0]["fields"]["description"], self.experience.description)
+        self.assertTrue(data[0]["fields"]["is_ongoing"])
 
     def test_empty_experience_page(self):
         Experience.objects.all().delete()
         response = self.client.get(reverse("main:show_experience"))
 
-        self.assertContains(response, "Belum ada pengalaman yang ditambahkan.")
+        self.assertContains(response, "Belum ada experience yang ditambahkan atau ditemukan.")
+        self.assertEqual(self.client.get(reverse("main:get_experience_json")).json(), [])   
 
     def test_completed_experience(self):
         self.experience.ended_at = timezone.now()
@@ -73,16 +72,17 @@ class EducationViewTest(TestCase):
     # 2. Halaman menampilkan pesan kondisi kosong ketika belum ada data
     def test_show_education_empty_condition(self):
         response = self.client.get(reverse('main:show_education'))
-        self.assertContains(response, 'Belum ada riwayat pendidikan yang ditampilkan.')
+        self.assertContains(response, 'Belum ada riwayat pendidikan yang ditambahkan atau ditemukan.')
+        self.assertEqual(self.client.get(reverse('api:education-list')).json(), [])
 
     # 3. Data model muncul di halaman HTML ketika ada data
-    def test_show_education_with_data(self):
+ def test_show_education_with_data(self):
         Education.objects.create(
             institution="Universitas Indonesia",
             degree="bachelor",
             field_of_study="Sistem Informasi"
         )
-        response = self.client.get(reverse('main:show_education'))
+        response = self.client.get(reverse('api:education-list'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Universitas Indonesia")
-        self.assertContains(response, "Sistem Informasi")
+        self.assertEqual(response.json()[0]["institution"], "Universitas Indonesia")
+        self.assertEqual(response.json()[0]["field_of_study"], "Sistem Informasi")
