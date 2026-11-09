@@ -139,3 +139,40 @@ Dalam pengerjaan tugas ini, saya menggunakan bantuan alat AI (ChatGPT & Gemini) 
         a. Auto-Escaping Otomatis pada Django: Secara bawaan, template engine Django selalu melakukan escaping pada karakter khusus HTML (<, >, &, ", ') menjadi HTML entity. Hal ini membuat skrip yang dimasukkan hanya akan dirender sebagai teks biasa di browser.
 
         b. Manipulasi DOM Manual di JavaScript: Saat menyajikan data hasil AJAX menggunakan properti seperti innerHTML, JavaScript tidak melakukan sanitasi otomatis. Jika data JSON mengandung skrip berbahaya (seperti <img src="x" onerror="alert('XSS')">), browser akan langsung mengeksekusinya. Maka dari itu, pengembang wajib menerapkan fungsi escaping manual atau menggunakan textContent saat mengolah data AJAX.
+
+
+### Tugas 6
+
+1. REST (Representational State Transfer) adalah gaya arsitektur untuk merancang web API, bukan library atau format data. Data diperlakukan sebagai resource yang ditunjuk URL (misalnya `/api/v1/education/`), HTTP method menyatakan tindakan (GET membaca, POST membuat, PUT/PATCH mengubah, DELETE menghapus), dan klien-server bertukar representasi data (JSON). Mengembalikan JSON saja belum cukup, karena API yang menaruh tindakan di URL (misalnya `/education/add-ajax/`) atau memakai satu method untuk semuanya tetap mengembalikan JSON tetapi tidak mengikuti gagasan resource dan method tadi. PUT mengirim representasi pengganti sehingga seluruh field wajib dikirim; PATCH hanya mengirim field yang ingin diubah. PUT cocok ketika formulir edit mengirim semua isian sekaligus, PATCH cocok ketika hanya satu field yang berubah, misalnya mengganti `field_of_study` saja.
+
+2. Serializer menerjemahkan objek model menjadi data Python yang dirender menjadi JSON (serialization) dan memvalidasi input klien sebelum disimpan (deserialization). Dibanding merakit dictionary manual dengan JsonResponse, serializer mendefinisikan kontrak data di satu tempat, validasi dan pembersihan input (`validate_<field>` dengan `strip_tags`) ikut di dalamnya, field hasil perhitungan seperti `star_count` otomatis read-only, `ModelSerializer` menyediakan `create()` dan `update()`, dan kodenya tidak diulang untuk setiap model.
+
+3. Autentikasi menjawab "siapa kamu" (SessionAuthentication mengisi `request.user` dari session login), sedangkan otorisasi menjawab "apa yang boleh kamu lakukan" (permission class memutuskan request boleh diteruskan atau tidak). Hak akses harus diperiksa di server karena menyembunyikan tombol hanya mengubah tampilan: siapa pun tetap dapat mengirim request DELETE langsung lewat Console, curl, atau Browsable API. Permission class di server menolak request itu dengan 403 apa pun yang ditampilkan template.
+
+4. Dengan SessionAuthentication, browser mengirim cookie session secara otomatis, sehingga situs lain dapat memicu request atas nama pengguna yang sedang login (CSRF). Token CSRF membuktikan request berasal dari halaman kita sendiri, karena situs lain tidak dapat membacanya. Test dengan `force_authenticate` melewati proses login dan session, sehingga pemeriksaan CSRF tidak ikut berjalan. Karena itu dipakai `APIClient(enforce_csrf_checks=True)` dengan `.login()` untuk membuktikan POST tanpa token ditolak dengan 403.
+
+#### AI Disclosure 
+
+Dalam pengerjaan Tugas 6, saya menggunakan **Claude (Anthropic) melalui claude.ai** sebagai alat bantu selama proses pengembangan dan debugging.
+
+**Bagian yang dibantu AI:**
+- Penyusunan `EducationSerializer`.
+- Penyusunan dan penyesuaian API view serta routing untuk endpoint Education.
+- Implementasi permission untuk peran Editor.
+- Penyusunan test berbasis `APITestCase`.
+- Perbaikan assertion pada `main/tests.py`.
+- Penulisan ulang `education.html`, terutama bagian `fetch()`, modal tambah/edit, dan toast.
+- Membantu menyusun draf jawaban pertanyaan reflektif pada README.
+
+**Strategi prompting:**
+Saya memberikan materi Tugas 6 dan Tutorial 7 serta konteks proyek yang diperlukan kepada AI. Saya meminta panduan secara bertahap berdasarkan ketentuan tugas dan meminta AI untuk tidak mengarang struktur, field, atau informasi yang tidak tersedia. Saya juga memberikan hasil atau error yang ditemukan selama proses pengerjaan agar AI dapat membantu menganalisis dan memberikan saran perbaikan.
+
+**Verifikasi dan perbaikan manual:**
+Hasil dari AI tidak langsung digunakan tanpa pemeriksaan. Saya menyesuaikan setiap saran dengan struktur dan kebutuhan proyek, kemudian melakukan pengujian untuk memastikan implementasinya sesuai dengan ketentuan tugas. Saya juga melakukan penyesuaian berdasarkan hasil pengujian dan menemukan beberapa bagian yang perlu diperbaiki secara manual.
+
+Contohnya, pilihan `degree` pada dropdown dibuat berdasarkan informasi yang tersedia saat AI membantu pengerjaan. Karena pilihan `degree` tidak memiliki `choices` yang dapat dijadikan acuan oleh AI, saya menyesuaikan pilihan tersebut secara manual agar sesuai dengan data yang digunakan pada proyek.
+
+**Keterbatasan AI:**
+AI tidak dapat menjalankan proyek saya secara langsung pada lingkungan pengembangan saya. Oleh karena itu, kode yang diberikan AI tetap perlu diuji pada proyek sebenarnya. Hasil pengujian tersebut menjadi dasar untuk menentukan apakah saran AI dapat digunakan atau perlu diperbaiki.
+
+AI digunakan sebagai **alat bantu dalam memahami materi, menyusun implementasi, dan membantu proses debugging**, sedangkan penyesuaian terhadap proyek, pengujian, serta keputusan akhir mengenai implementasi dilakukan oleh saya.
