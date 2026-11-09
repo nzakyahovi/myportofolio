@@ -1,6 +1,6 @@
 from django.utils.html import strip_tags
 from rest_framework import serializers
-from main.models import Project
+from main.models import Project, Education
 
 class ProjectSerializer(serializers.ModelSerializer):
     star_count = serializers.SerializerMethodField()
@@ -39,3 +39,50 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_starred_by_names(self, obj):
         return ", ".join(user.username for user in obj.starred_by.all())
+
+class EducationSerializer(serializers.ModelSerializer):
+    star_count = serializers.SerializerMethodField()
+    is_starred = serializers.SerializerMethodField()
+    starred_by_names = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = Education
+        fields = [
+            "id", "institution", "degree", "field_of_study",
+            "start_year", "end_year", "education_image_url",
+            "star_count", "is_starred", "starred_by_names",
+        ]
+        read_only_fields = ["id"]
+        # Di model institution null=True, tapi EducationForm mewajibkannya.
+        extra_kwargs = {
+            "institution": {"required": True, "allow_null": False},
+        }
+
+    def validate_institution(self, value):
+        value = strip_tags(value).strip()
+        if not value:
+            raise serializers.ValidationError("Institution cannot be empty.")
+        return value
+
+    def validate_degree(self, value):
+        value = strip_tags(value).strip()
+        if not value:
+            raise serializers.ValidationError("Degree cannot be empty.")
+        return value
+
+    def validate_field_of_study(self, value):
+        return strip_tags(value).strip()
+
+    def get_star_count(self, obj):
+        return obj.starred_by.count()
+
+    def get_is_starred(self, obj):
+        request = self.context.get("request")
+        if request is None or not request.user.is_authenticated:
+            return False
+        return request.user in obj.starred_by.all()
+
+    def get_starred_by_names(self, obj):
+        return ", ".join(user.username for user in obj.starred_by.all())
+
